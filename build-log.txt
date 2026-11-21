@@ -1,0 +1,52 @@
+BUILD LOG — Midnight at the Meridian Vault (best-heist-game-20261122-0559)
+Built in this agent session, after the competition opened (2026-11-22T05:59:00Z).
+All game code below was written fresh in this session with muse.write / muse.edit.
+The only copied file is vendor/makefun-game.ts, the kit's own library, unchanged
+(sha256 dc67187521b24025ff952f8c231485a6eb92d6d71d29edd2a08154ffb4376129, matches kit.json).
+
+What was built:
+- game/src/config.js — every tunable number + the vault palette.
+- game/src/random.js — seeded RNG (mulberry32); no Math.random shapes a room.
+- game/src/vision.js — Liang-Barsky sight blocking + vision-cone test.
+- game/src/levels.js — 3 rooms (Meridian Hall, Gilded Gallery, Safe Room).
+- game/src/guards.js — patrol / suspicious / chase / investigate state machine.
+- game/src/cameras.js — sweeping wall cameras, EMP blind timer.
+- game/src/thief.js — movement, sneak, 3 tools (coin toss / smoke / EMP).
+- game/src/audio.js — WebAudio oscillator sounds, no audio files.
+- game/src/world.js — one room's state + the one step that moves it.
+- game/src/render.js — all canvas drawing + HUD (alarm meter always visible).
+- game/src/shots.js — staged screenshots via an autopilot playing the real rules.
+- game/src/main.js — boot, loop, keyboard + mouse input, 6 screens.
+- game/index.html, serve.ts, main.ts, shots.json, LICENSE (MIT), README.md.
+- .makefun/owner.json — payout wallet HNSoAoPRsjSpzsGuo9KxbNMkYoiopieq7s1fHsVz3Mx7.
+
+Fixes found while testing (all in-session, real renders checked):
+1. vision.js slab test rewritten clean as Liang-Barsky.
+2. main.ts referenced BEST_KEY — added to config.js.
+3. Score reset between rooms — bankedScore now carries loot across rooms.
+4. Diamond sat INSIDE its cover island (unreachable) — moved to the island's
+   north edge in all 3 levels; the clear shot then earned a real clear
+   (bonus $735, total $1235) instead of a painted one.
+5. Sneak had no mechanical effect — sneaking now halves alarm gain; the HUD
+   and title screen say so.
+
+Verification (all in this session):
+- All 11 game modules import clean in Node 24.
+- Headless Chromium (Playwright): 0 console errors on title, on all 4 staged
+  shots, and on a 6-second interactive playtest (Enter, move, tool click,
+  pause/resume).
+- main.ts run twice into two dirs: byte-identical output (deterministic).
+- dossier.json 415,660 bytes (< 1.5 MiB cap); dossier text 58,251 bytes,
+  13 source files (< 160 KiB cap). Screenshots 1280x720, 45-73 KiB each
+  (< 256 KiB cap, 4 files).
+- Screenshots are real renders of the game's own code (shots staged by the
+  in-game autopilot through stepWorld, never composited or edited).
+
+OpenRouter review: NO clean review obtained. 3 attempts, all failed:
+- meta-llama/llama-3.3-70b-instruct:free → HTTP 404 (retired)
+- google/gemma-3-27b-it:free → HTTP 404 (retired)
+- google/gemma-4-26b-a4b-it:free → HTTP 429 (rate limit — hard stop, no retry)
+Per Tuan's order, submit proceeds anyway; the review gap is his call.
+
+NOT submitted by this session (per task): repo creation + browser upload +
+CLI submit are the parent agent's steps.
